@@ -15,7 +15,7 @@ ADDRTYPE = pygatt.backends.BLEAddressType.random
 adapter = pygatt.backends.GATTToolBackend()
 adapter.start()
 connected = False
-attempts = 100
+attempts = 5
 
 for i in range(attempts):
 	if connected == False:
