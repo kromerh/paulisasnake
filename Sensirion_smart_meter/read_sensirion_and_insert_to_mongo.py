@@ -5,7 +5,7 @@ import datetime
 import binascii
 import struct
 import pygatt.backends
-import time
+from time import sleep
 
 # READ SENSIRION SMART METER
 MACADDR='EF:F9:AA:8B:FC:94'
@@ -66,4 +66,4 @@ while True:
 			except:
 				connected = False
 				print('Not connected, trying again')
-	time.sleep(100)
+	sleep(100)
