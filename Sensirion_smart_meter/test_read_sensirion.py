@@ -17,12 +17,12 @@ print("connected")
 
 temp = device.char_read(TEMP_NOTI_UUID)
 tempf = struct.unpack('<f',temp)
-print("read temp : %.2f" % tempf)
+print(f'read temp {tempf}')
 
 
 humi = device.char_read(HUMI_NOTI_UUID)
 humif = struct.unpack('<f',humi)
-print("read humi : %.2f" % humif)
+print(f'read humi {humif}')
 
 
 
