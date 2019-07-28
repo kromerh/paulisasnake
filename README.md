@@ -5,6 +5,9 @@ RPi3 temperature and humidity sensor
 ## bluetooth on RPi3
 https://tutorials-raspberrypi.de/raspberry-pi-3-wlan-einrichten-bluetooth/
 
+## Sensirion latest project
+https://github.com/abrauchli/python-smartgadget
+
 # OLD VERSION
 
 ## Hardware
