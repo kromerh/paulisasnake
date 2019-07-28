@@ -14,19 +14,30 @@ ADDRTYPE = pygatt.backends.BLEAddressType.random
 
 adapter = pygatt.backends.GATTToolBackend()
 adapter.start()
+connected = False
+attempts = 100
 
-device = adapter.connect(MACADDR,5,ADDRTYPE)
+for i in range(attempts):
+	if connected == False:
+		try:
+			device = adapter.connect(MACADDR,5,ADDRTYPE)
+			connected = True
+		except:
+			connected = False
+			print('Not connected, trying again')
+
+print(connected)
 # device = adapter.connect(MACADDR)
 # print("connected")
 
 temp = device.char_read(TEMP_NOTI_UUID)
 tempf = struct.unpack('<f',temp)
-# print(f'read temp {tempf}')
+print(f'read temp {tempf}')
 
 
 humi = device.char_read(HUMI_NOTI_UUID)
 humif = struct.unpack('<f',humi)
-# print(f'read humi {humif}')
+print(f'read humi {humif}')
 
 
 device.disconnect()
