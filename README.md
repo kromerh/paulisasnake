@@ -22,7 +22,7 @@ https://github.com/abrauchli/python-smartgadget
 ## MongoDB access and crontab
 
 - the data from the test sensor is stored in the database `sensirion_test`, collection is `temp_and_humid`. 
-- to check, connect to the RPi3 and run `mongo`. Then run `use sensirion_test` and find everything in the collection using `db.temp_and_humid.find()`.
+- to check, connect to the RPi3 and run `mongo`. Then run `use sensirion_test` and find everything in the collection using `db.temp_and_humid.find().sort({$natural:-1})`.
 - execute `read_sensirion_and_insert_to_mongo.py` every minute in crontab adding `* * * * * python3 /home/pi/paulisasnake/Sensirion_smart_meter/read_sensirion_and_insert_to_mongo.py` to crontab -e
 
 # OLD VERSION
