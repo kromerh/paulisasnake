@@ -1,6 +1,11 @@
 # paulisasnake
 
-This is a IBM Watson IoT powered snake terrarium monitor.
+RPi3 temperature and humidity sensor
+
+## bluetooth on RPi3
+https://tutorials-raspberrypi.de/raspberry-pi-3-wlan-einrichten-bluetooth/
+
+# OLD VERSION
 
 ## Hardware
 
