@@ -22,7 +22,7 @@ while True:
 	for i in range(attempts):
 		if connected == False:
 			try:
-				device = adapter.connect(MACADDR,5,ADDRTYPE)
+				device = adapter.connect(MACADDR,10,ADDRTYPE)
 				connected = True
 				print(f'connected: {connected}, attempt: {i}')
 				# device = adapter.connect(MACADDR)
@@ -66,4 +66,4 @@ while True:
 			except:
 				connected = False
 				print('Not connected, trying again')
-	time.sleep(60)
+	time.sleep(100)
