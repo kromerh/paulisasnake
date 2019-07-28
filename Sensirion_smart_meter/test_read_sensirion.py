@@ -6,12 +6,13 @@ import pygatt.backends
 MACADDR='EF:F9:AA:8B:FC:94'
 TEMP_NOTI_UUID = '00002235-b38d-4985-720e-0f993a68ee41'
 HUMI_NOTI_UUID = '00001235-b38d-4985-720e-0f993a68ee41'
+ADDRTYPE = pygatt.backends.BLEAddressType.random
 
 adapter = pygatt.backends.GATTToolBackend()
 adapter.start()
 
-# device = adapter.connect(MACADDR,5,'random')
-device = adapter.connect(MACADDR)
+device = adapter.connect(MACADDR,5,ADDRTYPE)
+# device = adapter.connect(MACADDR)
 print("connected")
 
 temp = device.char_read(TEMP_NOTI_UUID)
