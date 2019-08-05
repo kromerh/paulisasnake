@@ -88,7 +88,7 @@ class AnyDevice(gatt.Device):
 	def read_hum(self):
 		return self.h_value
 
-sm = smartgadget.SmartGadget(adapter_name='hci0', device_mac='EF:F9:AA:8B:FC:94')
+sm = SmartGadget(adapter_name='hci0', device_mac='EF:F9:AA:8B:FC:94')
 
 print("SmartGadget: Temperature (°C): %.1f" % (sm.temperature()))
 print("SmartGadget: Humidity (%%): %.0f" % (sm.humidity()))
