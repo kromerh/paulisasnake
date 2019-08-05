@@ -90,6 +90,6 @@ class AnyDevice(gatt.Device):
 
 sm = smartgadget.SmartGadget(adapter_name='hci0', device_mac='EF:F9:AA:8B:FC:94')
 
-print("SmartGadget: Temperature (°C): %.1f" % (sm.temperature())
-print("SmartGadget: Humidity (%%): %.0f" % (sm.humidity())
+print("SmartGadget: Temperature (°C): %.1f" % (sm.temperature()))
+print("SmartGadget: Humidity (%%): %.0f" % (sm.humidity()))
 print("SmartGadget: Dew point (°C): %.1f" % (sm.dew()))
