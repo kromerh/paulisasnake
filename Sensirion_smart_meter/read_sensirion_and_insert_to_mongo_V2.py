@@ -251,7 +251,7 @@ def insert_to_mongo(data):
 def main():
     while True:
         # start = time.time()
-        bleAddress = 'C5:BB:A6:86:0E:64'
+        bleAddress = 'EF:F9:AA:8B:FC:94'
         print('Connecting to:', bleAddress)
         gadget = SHT31(bleAddress)
         print('Connected')
@@ -298,7 +298,7 @@ def main():
             data = data.fillna(-1)
             # print(data.tail())
             # print(gadget.loggedData) # contains the data sent via notifications
-            gadget.setLoggerIntervalMs(1000) # setting a new logger interval will clear all the logged data on the device
+            gadget.setLoggerIntervalMs(10000) # setting a new logger interval will clear all the logged data on the device
             gadget.disconnect()
             print('read values ', len(gadget.loggedDataReadout['Temp']), len(gadget.loggedDataReadout['Humi']))
             print('Disconnected')
