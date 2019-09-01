@@ -29,7 +29,7 @@ def read_mongo_db(hours_to_plot=1):
 		# coll.insert_many(data.to_dict('records'))
 
 
-		entries_to_read = hours_to_plot * 60 * 60 / 10 # readout frequency is 10 seconds
+		entries_to_read = int(hours_to_plot * 60 * 60 / 10) # readout frequency is 10 seconds
 		# ====== Finding Documents ====== #
 		documents = coll.find().limit(entries_to_read)
 		data = pd.DataFrame(list(documents))
