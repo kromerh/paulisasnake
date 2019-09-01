@@ -16,6 +16,6 @@ coll = db.temp_and_humid
 
 
 # ====== Finding Documents ====== #
-documents = coll.find().sort({"$natural": -1}).limit(50)
+documents = coll.find().sort([('_id', -1)]).limit(50)
 data = pd.DataFrame(list(documents))
 print(data)
