@@ -16,6 +16,6 @@ coll = db.temp_and_humid
 
 
 # ====== Finding Documents ====== #
-documents = coll.find()
+documents = coll.find().sort({x:1}).limit(60)
 data = pd.DataFrame(list(documents))
 print(data)
