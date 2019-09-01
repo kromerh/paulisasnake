@@ -33,11 +33,12 @@ def read_mongo_db(hours_to_plot=1):
 		# ====== Finding Documents ====== #
 		documents = coll.find().limit(entries_to_read)
 		data = pd.DataFrame(list(documents))
+		data = data[['time', 'temp', 'humid']]
 		print(data)
 
 		return data
 	else:
-		prinnt("none")
+		print("none")
 
 
 
