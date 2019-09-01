@@ -117,7 +117,7 @@ def cb_plot_graph(json_data):
 		'data': traces,
 		'layout': go.Layout(
 			xaxis={'title': 'Time'},
-			yaxis={'title': 'Temperature [degC]'},
+			yaxis={'title': 'Temperature [degC]', 'range':[0,40]},
 			margin={'l': 100, 'b': 100, 't': 10, 'r': 10},
 			legend={'x': 0, 'y': 1},
 			hovermode='closest'
@@ -181,7 +181,7 @@ def cb_plot_graph(json_data):
 		'data': traces,
 		'layout': go.Layout(
 			xaxis={'title': 'Time'},
-			yaxis={'title': 'Humidity [%]'},
+			yaxis={'title': 'Humidity [%]', 'range':[0,100]},
 			margin={'l': 100, 'b': 100, 't': 10, 'r': 10},
 			legend={'x': 0, 'y': 1},
 			hovermode='closest'
