@@ -42,7 +42,7 @@ def read_mongo_db(hours_to_plot=1):
 # callback to read the database and store in a json objective
 @app.callback(
 	Output('db_values', 'children'),
-	[Input('button-plot-historical', 'n_clicks')],
+	[Input('button_plot', 'n_clicks')],
 	[State("input_hours_to_plot", "children")]
 	)
 def cb_read_db(n, hours_to_plot):
@@ -52,7 +52,7 @@ def cb_read_db(n, hours_to_plot):
 
 @app.callback(
 	Output('display_date_plotted', 'children'),
-	[Input('ldb_values', 'children')],
+	[Input('db_values', 'children')],
 	[State("input_hours_to_plot", "children")])
 def display_time(json_data, hours_to_plot):
 	return u'Plot for the last : {} hours'.format(hours_to_plot)
