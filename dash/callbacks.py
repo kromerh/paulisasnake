@@ -31,7 +31,8 @@ def read_mongo_db(hours_to_plot=1):
 
 		entries_to_read = int(hours_to_plot * 60 * 60 / 10) # readout frequency is 10 seconds
 		# ====== Finding Documents ====== #
-		documents = coll.find().limit(entries_to_read)
+		documents = coll.find().sort([('time', -1)]).limit(entries_to_read)
+
 		data = pd.DataFrame(list(documents))
 		data = data[['time', 'temp', 'humid']]
 		print(entries_to_read,data)
