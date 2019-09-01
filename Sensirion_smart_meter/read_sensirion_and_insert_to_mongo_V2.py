@@ -287,7 +287,7 @@ def main():
         # data['time'] = data['time'].dt.tz_localize(None)
         data = data[['time', 'temp', 'humid']]
         data = data.fillna(-1)
-        print(data.tail())
+        # print(data.tail())
         # print(gadget.loggedData) # contains the data sent via notifications
         gadget.setLoggerIntervalMs(10000) # setting a new logger interval will clear all the logged data on the device
         gadget.disconnect()
