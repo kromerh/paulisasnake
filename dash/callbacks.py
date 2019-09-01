@@ -45,7 +45,7 @@ def read_mongo_db(hours_to_plot=1):
 @app.callback(
 	Output('db_values', 'children'),
 	[Input('button_plot', 'n_clicks')],
-	[State("input_hours_to_plot", "children")]
+	[State("input_hours_to_plot", "value")]
 	)
 def cb_read_db(n, hours_to_plot):
 	df = read_mongo_db(hours_to_plot)  # retrieve the past 60 seconds
@@ -55,7 +55,7 @@ def cb_read_db(n, hours_to_plot):
 @app.callback(
 	Output('display_date_plotted', 'children'),
 	[Input('db_values', 'children')],
-	[State("input_hours_to_plot", "children")])
+	[State("input_hours_to_plot", "value")])
 def display_time(json_data, hours_to_plot):
 	return u'Plot for the last : {} hours'.format(hours_to_plot)
 
