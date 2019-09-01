@@ -217,20 +217,10 @@ class SHT31():
         return self.__readCharacteristcAscii('SoftwareRevisionString')
 
 def utc_to_local_time(timestamp):
-    # METHOD 1: Hardcode zones:
-    from_zone = tz.gettz('UTC')
-    to_zone = tz.gettz('Europe/Zurich')
 
-    # utc = datetime.utcnow()
-    # utc = datetime.strptime('2011-01-21 02:37:21', '%Y-%m-%d %H:%M:%S')
-
-    # Tell the datetime object that it's in UTC time zone since
-    # datetime objects are 'naive' by default
     utc = datetime.utcfromtimestamp(timestamp/1000)
-    utc = utc.replace(tzinfo=from_zone)
 
-    # Convert time zone
-    my_time = utc.astimezone(to_zone)
+    my_time = utc + dt.timedelta(hours=2)
     return my_time
 
 def insert_to_mongo(data):
