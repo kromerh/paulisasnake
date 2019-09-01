@@ -249,64 +249,64 @@ def insert_to_mongo(data):
     coll.insert_many(data.to_dict('records'))
 
 def main():
-    while True:
-        # start = time.time()
-        bleAddress = 'EF:F9:AA:8B:FC:94'
-        print('Connecting to:', bleAddress)
-        gadget = SHT31(bleAddress)
-        print('Connected')
 
-        # print('Device name:', gadget.readDeviceName())
+    # start = time.time()
+    bleAddress = 'EF:F9:AA:8B:FC:94'
+    print('Connecting to:', bleAddress)
+    gadget = SHT31(bleAddress)
+    print('Connected')
 
-        # print('System ID: ', gadget.readSystemId())
-        # print('Model number string:', gadget.readModelNumberString())
-        # print('Serial number string:', gadget.readSerialNumberString())
-        # print('Firmware revision string:', gadget.readFirmwareRevisionString())
-        # print('Hardware revision string:', gadget.readHardwareRevisionString())
-        # print('Software revision string:', gadget.readSoftwareRevisionString())
-        # print('Manufacturer name string:', gadget.readManufacturerNameString())
+    # print('Device name:', gadget.readDeviceName())
 
-        print('Battery level [%]:', gadget.readBattery())
-        # print('Temperature [°C]:', '{:.2f}'.format(gadget.readTemperature()))
-        # print('Humidity [%]:', '{:.2f}'.format(gadget.readHumidity()))
+    # print('System ID: ', gadget.readSystemId())
+    # print('Model number string:', gadget.readModelNumberString())
+    # print('Serial number string:', gadget.readSerialNumberString())
+    # print('Firmware revision string:', gadget.readFirmwareRevisionString())
+    # print('Hardware revision string:', gadget.readHardwareRevisionString())
+    # print('Software revision string:', gadget.readSoftwareRevisionString())
+    # print('Manufacturer name string:', gadget.readManufacturerNameString())
 
-        # print('LoggerInterval [ms]: ', gadget.readLoggerIntervalMs())
-        gadget.setSyncTimeMs()
-        time.sleep(0.1) # Sleep a bit to enable the gadget to set the SyncTime; otherwise 0 is read when readNewestTimestampMs is used
-        print('OldestTimestampMs [µs]:', gadget.readOldestTimestampMs(), datetime.utcfromtimestamp(gadget.readOldestTimestampMs()/1000).strftime('%Y-%m-%d %H:%M:%S'))
-        print('NewestTimeStampMs [µs]:', gadget.readNewestTimestampMs(), datetime.utcfromtimestamp(gadget.readNewestTimestampMs()/1000).strftime('%Y-%m-%d %H:%M:%S'))
+    print('Battery level [%]:', gadget.readBattery())
+    # print('Temperature [°C]:', '{:.2f}'.format(gadget.readTemperature()))
+    # print('Humidity [%]:', '{:.2f}'.format(gadget.readHumidity()))
 
-        gadget.readLoggedDataInterval()
-        gadget.setTemperatureNotification(True) # enable notifications for humidity values; the object will log incoming data into the loggedData variable
-        gadget.setHumidityNotification(True) # enable notifications for humidity values; the object will log incoming data into the loggedData variable
+    # print('LoggerInterval [ms]: ', gadget.readLoggerIntervalMs())
+    gadget.setSyncTimeMs()
+    time.sleep(0.1) # Sleep a bit to enable the gadget to set the SyncTime; otherwise 0 is read when readNewestTimestampMs is used
+    print('OldestTimestampMs [µs]:', gadget.readOldestTimestampMs(), datetime.utcfromtimestamp(gadget.readOldestTimestampMs()/1000).strftime('%Y-%m-%d %H:%M:%S'))
+    print('NewestTimeStampMs [µs]:', gadget.readNewestTimestampMs(), datetime.utcfromtimestamp(gadget.readNewestTimestampMs()/1000).strftime('%Y-%m-%d %H:%M:%S'))
 
-        try:
-            while True:
-                if False is gadget.waitForNotifications(5) or False is gadget.isLogReadoutInProgress():
-                    print('Done reading data')
-                    break
-                # print('Read dataset')
-        finally:
-            data = gadget.loggedDataReadout # contains the data logged by the smartgadget
-            data = pd.DataFrame(data)
-            data.reset_index(inplace=True)
-            data.rename(columns={"index": "utc_time", 'Temp': 'temp', 'Humi': 'humid'}, inplace=True)
-            data['time'] = data['utc_time'].apply(lambda x: utc_to_local_time(x))
-            # data['time'] = data['time'].astype(pd.Timestamp)
-            # data['time'] = data['time'].dt.tz_localize(None)
-            data = data[['time', 'temp', 'humid']]
-            data = data.fillna(-1)
-            print(data.tail())
-            # print(gadget.loggedData) # contains the data sent via notifications
-            gadget.setLoggerIntervalMs(10000) # setting a new logger interval will clear all the logged data on the device
-            gadget.disconnect()
-            print('read values ', len(gadget.loggedDataReadout['Temp']), len(gadget.loggedDataReadout['Humi']))
-            print('Disconnected')
-            # end = time.time()
-            # print(end - start)
-            # select only relevant
-            insert_to_mongo(data)
-        time.sleep(5)
+    gadget.readLoggedDataInterval()
+    gadget.setTemperatureNotification(True) # enable notifications for humidity values; the object will log incoming data into the loggedData variable
+    gadget.setHumidityNotification(True) # enable notifications for humidity values; the object will log incoming data into the loggedData variable
+
+    try:
+        while True:
+            if False is gadget.waitForNotifications(5) or False is gadget.isLogReadoutInProgress():
+                print('Done reading data')
+                break
+            # print('Read dataset')
+    finally:
+        data = gadget.loggedDataReadout # contains the data logged by the smartgadget
+        data = pd.DataFrame(data)
+        data.reset_index(inplace=True)
+        data.rename(columns={"index": "utc_time", 'Temp': 'temp', 'Humi': 'humid'}, inplace=True)
+        data['time'] = data['utc_time'].apply(lambda x: utc_to_local_time(x))
+        # data['time'] = data['time'].astype(pd.Timestamp)
+        # data['time'] = data['time'].dt.tz_localize(None)
+        data = data[['time', 'temp', 'humid']]
+        data = data.fillna(-1)
+        print(data.tail())
+        # print(gadget.loggedData) # contains the data sent via notifications
+        gadget.setLoggerIntervalMs(10000) # setting a new logger interval will clear all the logged data on the device
+        gadget.disconnect()
+        print('read values ', len(gadget.loggedDataReadout['Temp']), len(gadget.loggedDataReadout['Humi']))
+        print('Disconnected')
+        # end = time.time()
+        # print(end - start)
+        # select only relevant
+        insert_to_mongo(data)
+    time.sleep(5)
 
 if __name__ == "__main__":
     main()

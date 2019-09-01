@@ -12,7 +12,7 @@ db = client.paulisasnake
 coll = db.temp_and_humid
 
 # Bulk inserting documents. Each row in the DataFrame will be a document in Mongo
-coll.insert_many(data.to_dict('records'))
+# coll.insert_many(data.to_dict('records'))
 
 
 # ====== Finding Documents ====== #
