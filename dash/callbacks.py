@@ -15,27 +15,29 @@ from datetime import datetime
 from app import app
 
 def read_mongo_db(hours_to_plot=1):
+	if hours_to_plot > 0:
+		# Choose the appropriate client
+		client = MongoClient()
 
-	# Choose the appropriate client
-	client = MongoClient()
+		# Connect to the db paulisasnake
+		db = client.paulisasnake
 
-	# Connect to the db paulisasnake
-	db = client.paulisasnake
+		# Use the collection temp and humid
+		coll = db.temp_and_humid
 
-	# Use the collection temp and humid
-	coll = db.temp_and_humid
+		# Bulk inserting documents. Each row in the DataFrame will be a document in Mongo
+		# coll.insert_many(data.to_dict('records'))
 
-	# Bulk inserting documents. Each row in the DataFrame will be a document in Mongo
-	# coll.insert_many(data.to_dict('records'))
+		hours_to_plot = float(hours_to_plot)
+		entries_to_read = hours_to_plot * 60 * 60 / 10 # readout frequency is 10 seconds
+		# ====== Finding Documents ====== #
+		documents = coll.find().limit(entries_to_read)
+		data = pd.DataFrame(list(documents))
+		print(data)
 
-	hours_to_plot = float(hours_to_plot)
-	entries_to_read = hours_to_plot * 60 * 60 / 10 # readout frequency is 10 seconds
-	# ====== Finding Documents ====== #
-	documents = coll.find().limit(entries_to_read)
-	data = pd.DataFrame(list(documents))
-	print(data)
-
-	return data
+		return data
+	else:
+		prinnt("none")
 
 
 
