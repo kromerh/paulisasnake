@@ -28,7 +28,7 @@ def read_mongo_db(hours_to_plot=1):
 		# Bulk inserting documents. Each row in the DataFrame will be a document in Mongo
 		# coll.insert_many(data.to_dict('records'))
 
-		hours_to_plot = float(hours_to_plot)
+
 		entries_to_read = hours_to_plot * 60 * 60 / 10 # readout frequency is 10 seconds
 		# ====== Finding Documents ====== #
 		documents = coll.find().limit(entries_to_read)
@@ -48,7 +48,7 @@ def read_mongo_db(hours_to_plot=1):
 	[State("input_hours_to_plot", "value")]
 	)
 def cb_read_db(n, hours_to_plot):
-	df = read_mongo_db(hours_to_plot)  # retrieve the past 60 seconds
+	df = read_mongo_db(float(hours_to_plot))  # retrieve the past 60 seconds
 	return df.to_json(date_format='iso', orient='split')
 
 
