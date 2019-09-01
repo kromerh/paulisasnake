@@ -220,7 +220,7 @@ def utc_to_local_time(timestamp):
 
     utc = datetime.utcfromtimestamp(timestamp/1000)
 
-    my_time = utc + dt.timedelta(hours=2)
+    my_time = utc + datetime.timedelta(hours=2)
     return my_time
 
 def insert_to_mongo(data):
