@@ -61,128 +61,128 @@ def display_time(json_data, hours_to_plot):
 	return u'Plot for the last : {} hours'.format(hours_to_plot)
 
 
-# # temperature
-# @app.callback(
-# 	Output("plot_temp", "figure"),
-# 	[Input("db_values", "children")]
-# )
-# # def plot_graph_data(df, figure, command, start, start_button, PID):
-# def cb_plot_graph(json_data):
+# temperature
+@app.callback(
+	Output("plot_temp", "figure"),
+	[Input("db_values", "children")]
+)
+# def plot_graph_data(df, figure, command, start, start_button, PID):
+def cb_plot_graph(json_data):
 
-# 	# print(state_dic)
-# 	traces = []
+	# print(state_dic)
+	traces = []
 
-# 	try:
-# 		data = pd.read_json(json_data, orient='split')
-# 		# print(data.head())
-# 		traces.append(
-# 			go.Scatter(
-# 				x=data['time'],
-# 				y=data['temp'],
-# 				line=go.scatter.Line(
-# 					color='#42C4F7',
-# 					# width=2.0
-# 				),
-# 				text='Temperature [degC]',
-# 				# mode='markers',
-# 				mode='lines',
-# 				opacity=1,
+	try:
+		data = pd.read_json(json_data, orient='split')
+		# print(data.head())
+		traces.append(
+			go.Scatter(
+				x=data['time'],
+				y=data['temp'],
+				line=go.scatter.Line(
+					color='#42C4F7',
+					# width=2.0
+				),
+				text='Temperature [degC]',
+				# mode='markers',
+				mode='lines',
+				opacity=1,
 
-# 				name='FP [W]'
-# 			)
-# 		)
-
-
-# 	except:
-# 		traces.append(go.Scatter(
-# 			x=[],
-# 			y=[],
-# 			line=go.scatter.Line(
-# 				color='#42C4F7',
-# 				width=1.0
-# 			),
-# 			text='dose [muSv/hr]',
-# 			# mode='markers',
-# 			opacity=1,
-# 			marker={
-# 				 'size': 15,
-# 				 'line': {'width': 1, 'color': '#42C4F7'}
-# 			},
-# 			mode='lines',
-# 			name='dose [muSv/hr]'
-# 		))
-
-# 	return {
-# 		'data': traces,
-# 		'layout': go.Layout(
-# 			xaxis={'title': 'Time'},
-# 			yaxis={'title': 'Temperature [degC]'},
-# 			margin={'l': 100, 'b': 100, 't': 10, 'r': 10},
-# 			legend={'x': 0, 'y': 1},
-# 			hovermode='closest'
-# 		)
-# 	}
+				name='FP [W]'
+			)
+		)
 
 
-# # humidity graph
-# @app.callback(
-# 	Output("plot_humid", "figure"),
-# 	[Input("db_values", "children")]
-# )
-# # def plot_graph_data(df, figure, command, start, start_button, PID):
-# def cb_plot_graph(json_data):
+	except:
+		traces.append(go.Scatter(
+			x=[],
+			y=[],
+			line=go.scatter.Line(
+				color='#42C4F7',
+				width=1.0
+			),
+			text='dose [muSv/hr]',
+			# mode='markers',
+			opacity=1,
+			marker={
+				 'size': 15,
+				 'line': {'width': 1, 'color': '#42C4F7'}
+			},
+			mode='lines',
+			name='dose [muSv/hr]'
+		))
 
-# 	# print(state_dic)
-# 	traces = []
-
-# 	try:
-# 		data = pd.read_json(json_data, orient='split')
-# 		# print(data.head())
-
-# 		traces.append(
-# 			go.Scatter(
-# 				x=data['time'],
-# 				y=data['humid'],
-# 				line=go.scatter.Line(
-# 					color='red',
-# 					# width=2.0
-# 				),
-# 				text='Humidity [%]',
-# 				# mode='markers',
-# 				mode='lines',
-# 				opacity=1,
-
-# 				name='RP [W]'
-# 			)
-# 		)
+	return {
+		'data': traces,
+		'layout': go.Layout(
+			xaxis={'title': 'Time'},
+			yaxis={'title': 'Temperature [degC]'},
+			margin={'l': 100, 'b': 100, 't': 10, 'r': 10},
+			legend={'x': 0, 'y': 1},
+			hovermode='closest'
+		)
+	}
 
 
-# 	except:
-# 		traces.append(go.Scatter(
-# 			x=[],
-# 			y=[],
-# 			line=go.scatter.Line(
-# 				color='#42C4F7',
-# 				width=1.0
-# 			),
-# 			text='dose [muSv/hr]',
-# 			# mode='markers',
-# 			opacity=1,
-# 			marker={
-# 				 'size': 15,
-# 				 'line': {'width': 1, 'color': '#42C4F7'}
-# 			},
-# 			mode='lines',
-# 			name='dose [muSv/hr]'
-# 		))
+# humidity graph
+@app.callback(
+	Output("plot_humid", "figure"),
+	[Input("db_values", "children")]
+)
+# def plot_graph_data(df, figure, command, start, start_button, PID):
+def cb_plot_graph(json_data):
 
-# 	return {
-# 		'data': traces,
-# 		'layout': go.Layout(
-# 			xaxis={'title': 'Time'},
-# 			yaxis={'title': 'Humidity [%]'},
-# 			margin={'l': 100, 'b': 100, 't': 10, 'r': 10},
-# 			legend={'x': 0, 'y': 1},
-# 			hovermode='closest'
-# 		)
-# 	}
+	# print(state_dic)
+	traces = []
+
+	try:
+		data = pd.read_json(json_data, orient='split')
+		# print(data.head())
+
+		traces.append(
+			go.Scatter(
+				x=data['time'],
+				y=data['humid'],
+				line=go.scatter.Line(
+					color='red',
+					# width=2.0
+				),
+				text='Humidity [%]',
+				# mode='markers',
+				mode='lines',
+				opacity=1,
+
+				name='RP [W]'
+			)
+		)
+
+
+	except:
+		traces.append(go.Scatter(
+			x=[],
+			y=[],
+			line=go.scatter.Line(
+				color='#42C4F7',
+				width=1.0
+			),
+			text='dose [muSv/hr]',
+			# mode='markers',
+			opacity=1,
+			marker={
+				 'size': 15,
+				 'line': {'width': 1, 'color': '#42C4F7'}
+			},
+			mode='lines',
+			name='dose [muSv/hr]'
+		))
+
+	return {
+		'data': traces,
+		'layout': go.Layout(
+			xaxis={'title': 'Time'},
+			yaxis={'title': 'Humidity [%]'},
+			margin={'l': 100, 'b': 100, 't': 10, 'r': 10},
+			legend={'x': 0, 'y': 1},
+			hovermode='closest'
+		)
+	}
