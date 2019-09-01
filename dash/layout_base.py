@@ -50,7 +50,15 @@ layout_base = html.Div([
 
 	html.Div(id='display_date_plotted', children='Plotted past ... hours'),
 
-	dcc.Graph(id='plot_temp_and_humid'),  # displays the data
+	dcc.Graph(id='plot_temp'),  # displays the data,plot_humid
+	dcc.Graph(id='plot_humid'),  # displays the data,plot_humid
+	# Placeholder Divs
+	html.Div(
+		[
+			html.Div(id="db_values"), # values stored in the database
+		],
+		style={"visibility": "hidden"},
+	)
 
 
 ])
