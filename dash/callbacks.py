@@ -35,6 +35,7 @@ def read_mongo_db(hours_to_plot=1):
 
 		data = pd.DataFrame(list(documents))
 		data = data[['time', 'temp', 'humid']]
+
 		print(entries_to_read,data)
 
 		return data
@@ -75,6 +76,8 @@ def cb_plot_graph(json_data):
 
 	try:
 		data = pd.read_json(json_data, orient='split')
+		data = data[['time', 'temp']]
+		data = data.dropna()
 		# print(data.head())
 		traces.append(
 			go.Scatter(
@@ -138,6 +141,11 @@ def cb_plot_graph(json_data):
 
 	try:
 		data = pd.read_json(json_data, orient='split')
+		data = data[['time', 'humid']]
+
+
+		data = data.dropna()
+
 		# print(data.head())
 
 		traces.append(
