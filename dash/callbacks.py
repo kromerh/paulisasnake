@@ -77,6 +77,7 @@ def cb_plot_graph(json_data):
 	try:
 		data = pd.read_json(json_data, orient='split')
 		data = data[['time', 'temp']]
+		data = data[ data['temp'] > -9000 ]
 		data = data.dropna()
 		# print(data.head())
 		traces.append(
@@ -142,6 +143,7 @@ def cb_plot_graph(json_data):
 	try:
 		data = pd.read_json(json_data, orient='split')
 		data = data[['time', 'humid']]
+		data = data[ data['humid'] > -9000 ]
 
 
 		data = data.dropna()
