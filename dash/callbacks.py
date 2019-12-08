@@ -52,7 +52,7 @@ def read_mongo_db(hours_to_plot=1):
 		data = data[(data['humid']>-0.5)&(data['humid']<110)]
 		data = data[(data['temp']>-40)&(data['temp']<60)]
 
-		print(entries_to_read,data)
+		# print(entries_to_read,data)
 
 		return data
 	else:
@@ -95,7 +95,7 @@ def cb_plot_graph(json_data):
 		data = data[['time', 'temp']]
 		data = data[ data['temp'] > -9000 ]
 		data = data.dropna()
-		# print(data.head())
+		print(data.head())
 		traces.append(
 			go.Scatter(
 				x=data['time'],
