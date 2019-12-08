@@ -11,20 +11,10 @@ from pymongo import MongoClient
 
 import time
 from datetime import datetime
-import pytz
 
 from app import app
 
 
-
-def convertUTCtoLocalTime(timestamp):
-
-    utc = datetime.utcfromtimestamp(timestamp/1000)
-
-    tz = pytz.timezone('Europe/Berlin')
-    now_berlin = tz.fromutc(utc)
-
-    return pd.to_datetime(now_berlin)
 
 def read_mongo_db(hours_to_plot=1):
 	if hours_to_plot > 0:
@@ -46,8 +36,10 @@ def read_mongo_db(hours_to_plot=1):
 		documents = coll.find().sort([('utc_time', -1)]).limit(entries_to_read)
 
 		data = pd.DataFrame(list(documents))
-		data = data[['utc_time', 'temp', 'humid']]
-
+		data = data[['time', 'temp', 'humid']]
+		# clean data
+		data = data[(data['humid']>-0.5)&(data['humid']<110)]
+		data = data[(data['temp']>-40)&(data['temp']<60)]
 
 		# print(entries_to_read,data)
 
@@ -89,10 +81,7 @@ def cb_plot_graph(json_data):
 
 	try:
 		data = pd.read_json(json_data, orient='split')
-		data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
-		# clean data
-		data = data[(data['humid']>-0.5)&(data['humid']<110)]
-		data = data[(data['temp']>-40)&(data['temp']<60)]
+
 
 		data = data[['time', 'temp']]
 		data = data[ data['temp'] > -9000 ]
@@ -161,10 +150,7 @@ def cb_plot_graph(json_data):
 
 	try:
 		data = pd.read_json(json_data, orient='split')
-		data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
-		# clean data
-		data = data[(data['humid']>-0.5)&(data['humid']<110)]
-		data = data[(data['temp']>-40)&(data['temp']<60)]
+
 		data = data[['time', 'humid']]
 		data = data[ data['humid'] > -9000 ]
 

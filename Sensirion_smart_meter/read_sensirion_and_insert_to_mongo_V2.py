@@ -7,6 +7,7 @@ import datetime as dt
 from dateutil import tz
 import pandas as pd
 from pymongo import MongoClient
+import pytz
 
 class SHT31Delegate(DefaultDelegate):
     def __init__(self, parent):
@@ -217,12 +218,14 @@ class SHT31():
     def readSoftwareRevisionString(self):
         return self.__readCharacteristcAscii('SoftwareRevisionString')
 
-def utc_to_local_time(timestamp):
+def convertUTCtoLocalTime(timestamp):
 
     utc = datetime.utcfromtimestamp(timestamp/1000)
 
-    my_time = utc + dt.timedelta(hours=2)
-    return my_time
+    tz = pytz.timezone('Europe/Berlin')
+    now_berlin = tz.fromutc(utc)
+
+    return pd.to_datetime(now_berlin)
 
 def insert_to_mongo(data):
 
@@ -282,7 +285,8 @@ def main():
         data = pd.DataFrame(data)
         data.reset_index(inplace=True)
         data.rename(columns={"index": "utc_time", 'Temp': 'temp', 'Humi': 'humid'}, inplace=True)
-        # data['time'] = data['utc_time'].apply(lambda x: utc_to_local_time(x))
+        data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
+
         # data['time'] = data['time'].astype(pd.Timestamp)
         # data['time'] = data['time'].dt.tz_localize(None)
         data = data[['utc_time', 'temp', 'humid']]
