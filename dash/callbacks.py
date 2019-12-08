@@ -87,7 +87,7 @@ def cb_plot_graph(json_data):
 		data = data[['time', 'temp']]
 		data = data[ data['temp'] > -9000 ]
 		data = data.dropna()
-		print(data.head())
+		# print(data.head())
 		traces.append(
 			go.Scatter(
 				x=data['time'],
