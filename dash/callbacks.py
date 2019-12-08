@@ -43,10 +43,11 @@ def read_mongo_db(hours_to_plot=1):
 
 		entries_to_read = int(hours_to_plot * 60 * 60 / 10) # readout frequency is 10 seconds
 		# ====== Finding Documents ====== #
-		documents = coll.find().sort([('time', -1)]).limit(entries_to_read)
+		documents = coll.find().sort([('utc_time', -1)]).limit(entries_to_read)
 
 		data = pd.DataFrame(list(documents))
-		data = data[['time', 'temp', 'humid']]
+		data = data[['utc_time', 'temp', 'humid']]
+		data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
 		# clean data
 		data = data[(data['humid']>-0.5)&(data['humid']<110)]
 		data = data[(data['temp']>-40)&(data['temp']<60)]
