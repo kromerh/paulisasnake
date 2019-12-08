@@ -47,10 +47,7 @@ def read_mongo_db(hours_to_plot=1):
 
 		data = pd.DataFrame(list(documents))
 		data = data[['utc_time', 'temp', 'humid']]
-		data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
-		# clean data
-		data = data[(data['humid']>-0.5)&(data['humid']<110)]
-		data = data[(data['temp']>-40)&(data['temp']<60)]
+
 
 		# print(entries_to_read,data)
 
@@ -92,6 +89,11 @@ def cb_plot_graph(json_data):
 
 	try:
 		data = pd.read_json(json_data, orient='split')
+		data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
+		# clean data
+		data = data[(data['humid']>-0.5)&(data['humid']<110)]
+		data = data[(data['temp']>-40)&(data['temp']<60)]
+
 		data = data[['time', 'temp']]
 		data = data[ data['temp'] > -9000 ]
 		data = data.dropna()
@@ -155,6 +157,10 @@ def cb_plot_graph(json_data):
 
 	# print(state_dic)
 	traces = []
+	data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
+	# clean data
+	data = data[(data['humid']>-0.5)&(data['humid']<110)]
+	data = data[(data['temp']>-40)&(data['temp']<60)]
 
 	try:
 		data = pd.read_json(json_data, orient='split')
