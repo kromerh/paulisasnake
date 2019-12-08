@@ -11,8 +11,20 @@ from pymongo import MongoClient
 
 import time
 from datetime import datetime
+import pytz
 
 from app import app
+
+
+
+def convertUTCtoLocalTime(timestamp):
+
+    utc = datetime.utcfromtimestamp(timestamp/1000)
+
+    tz = pytz.timezone('Europe/Berlin')
+    now_berlin = tz.fromutc(utc)
+
+    return pd.to_datetime(now_berlin)
 
 def read_mongo_db(hours_to_plot=1):
 	if hours_to_plot > 0:
