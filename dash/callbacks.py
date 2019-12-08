@@ -36,12 +36,13 @@ def read_mongo_db(hours_to_plot=1):
 		documents = coll.find().sort([('time', -1)]).limit(entries_to_read)
 
 		data = pd.DataFrame(list(documents))
+		print(entries_to_read,data)
+
 		data = data[['time', 'temp', 'humid']]
 		# clean data
 		data = data[(data['humid']>-0.5)&(data['humid']<110)]
 		data = data[(data['temp']>-40)&(data['temp']<60)]
 
-		print(entries_to_read,data)
 
 		return data
 	else:
