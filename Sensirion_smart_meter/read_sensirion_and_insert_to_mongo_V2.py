@@ -282,10 +282,10 @@ def main():
         data = pd.DataFrame(data)
         data.reset_index(inplace=True)
         data.rename(columns={"index": "utc_time", 'Temp': 'temp', 'Humi': 'humid'}, inplace=True)
-        data['time'] = data['utc_time'].apply(lambda x: utc_to_local_time(x))
+        # data['time'] = data['utc_time'].apply(lambda x: utc_to_local_time(x))
         # data['time'] = data['time'].astype(pd.Timestamp)
         # data['time'] = data['time'].dt.tz_localize(None)
-        data = data[['time', 'temp', 'humid']]
+        data = data[['utc_time', 'temp', 'humid']]
         data = data.fillna(-8999)
         # print(data.tail())
         # print(gadget.loggedData) # contains the data sent via notifications
