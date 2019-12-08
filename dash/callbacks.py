@@ -157,13 +157,14 @@ def cb_plot_graph(json_data):
 
 	# print(state_dic)
 	traces = []
-	data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
-	# clean data
-	data = data[(data['humid']>-0.5)&(data['humid']<110)]
-	data = data[(data['temp']>-40)&(data['temp']<60)]
+
 
 	try:
 		data = pd.read_json(json_data, orient='split')
+		data['time'] = data['utc_time'].apply(lambda x: convertUTCtoLocalTime(x))
+		# clean data
+		data = data[(data['humid']>-0.5)&(data['humid']<110)]
+		data = data[(data['temp']>-40)&(data['temp']<60)]
 		data = data[['time', 'humid']]
 		data = data[ data['humid'] > -9000 ]
 
