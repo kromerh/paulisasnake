@@ -289,7 +289,7 @@ def main():
 
         # data['time'] = data['time'].astype(pd.Timestamp)
         # data['time'] = data['time'].dt.tz_localize(None)
-        data = data[['utc_time', 'temp', 'humid']]
+        data = data[['time','utc_time', 'temp', 'humid']]
         data = data.fillna(-8999)
         # print(data.tail())
         # print(gadget.loggedData) # contains the data sent via notifications
