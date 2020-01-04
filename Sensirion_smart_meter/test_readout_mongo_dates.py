@@ -26,6 +26,11 @@ agg = coll.aggregate([
      {"$sort": { "_id": 1 }}
 ])
 
+dates = {}
 
 for x in agg:
-    print(x,type(x))
+    d  = x['_id'] # this date in the object
+    c = x['count']# how many counts for that day
+    dates[d] = c
+
+print(dates)
