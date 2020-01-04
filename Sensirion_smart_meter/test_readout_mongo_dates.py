@@ -12,7 +12,7 @@ db = client.paulisasnake
 # Use the collection
 coll = db.humid_storage
 
-agg = coll.humid_storage.aggregate([
+agg = coll.aggregate([
     {"$group": {
         "_id" : { "$concat": [
             {"$substr": [{"$year": "$time"}, 0, 4 ]},
@@ -25,6 +25,8 @@ agg = coll.humid_storage.aggregate([
      }},
      {"$sort": { "_id": 1 }}
 ])
+
+print(agg)
 
 for x in agg:
     print(x)
