@@ -26,7 +26,6 @@ agg = coll.aggregate([
      {"$sort": { "_id": 1 }}
 ])
 
-print(agg)
+dates = agg.to_mongo()
 
-for x in agg:
-    print(x)
+print(dates)
