@@ -26,4 +26,5 @@ agg = coll.humid_storage.aggregate([
      {"$sort": { "_id": 1 }}
 ])
 
-print(agg)
+for x in agg:
+    print(x)
