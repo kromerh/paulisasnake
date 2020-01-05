@@ -28,4 +28,5 @@ vals = coll.find({
 	}
 })
 
-print(vals)
+for val in vals:
+	print(val)
