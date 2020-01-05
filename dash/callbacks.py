@@ -142,7 +142,7 @@ def update_values_date_end(value):
 # callback to read temperature from mongo
 @app.callback(
 	Output('values_temp', 'children'),
-	[Input('button_plot', 'n_clicks')]
+	[Input('button_plot', 'n_clicks')],
 	[State('dropdown_date_start', 'value'),
 	State('dropdown_date_end', 'value')])
 def read_temperature_from_mongo(n, start_date, end_date):
@@ -153,7 +153,7 @@ def read_temperature_from_mongo(n, start_date, end_date):
 # callback to read humidity from mongo
 @app.callback(
 	Output('values_humid', 'children'),
-	[Input('button_plot', 'n_clicks')]
+	[Input('button_plot', 'n_clicks')],
 	[State('dropdown_date_start', 'value'),
 	State('dropdown_date_end', 'value')])
 def read_humid_from_mongo(n, start_date, end_date):
