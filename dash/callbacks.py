@@ -8,9 +8,9 @@ import plotly.graph_objs as go
 import numpy as np
 import pandas as pd
 from pymongo import MongoClient
-
+import dateutil
 import time
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from app import app
 
