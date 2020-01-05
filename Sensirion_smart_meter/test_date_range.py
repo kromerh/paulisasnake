@@ -2,6 +2,7 @@ from pymongo import MongoClient
 import pandas as pd
 import numpy as np
 import datetime
+import dateutil
 
 # Choose the appropriate client
 client = MongoClient()
@@ -12,10 +13,18 @@ db = client.paulisasnake
 # Use the collection
 coll = db.humid_storage
 
+
+
+start_date_str = "2019-12-11T00:00:00.000Z"
+end_date_str = "2019-12-14T00:00:00.000Z"
+
+start_date = dateutil.parser.parse(start_date_str)
+end_date = dateutil.parser.parse(end_date_str)
+
 vals = coll.find({
 	"time": {
-		'$gte': ISODate("2019-12-11T00:00:00.000Z"),
-		'$lt': ISODate("2019-12-14T00:00:00.000Z")
+		'$gte': start_date,
+		'$lt': end_date
 	}
 })
 
