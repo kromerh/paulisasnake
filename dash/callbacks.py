@@ -21,9 +21,6 @@ client = MongoClient()
 # Connect to the db
 db = client.paulisasnake
 
-def test(string):
-	print(string)
-
 def read_dates_from_db(db=db):
 	"""
 	Gets the list of dates available in the temperature storage table and returns the list.
@@ -53,11 +50,11 @@ def read_dates_from_db(db=db):
 	    c = x['count']# how many counts for that day
 	    dates[d] = c
 
-	print(dates)
+
 
 	# convert to list
 	lst_dates = dates.keys()
-
+	print(lst_dates)
 	return lst_dates
 
 
