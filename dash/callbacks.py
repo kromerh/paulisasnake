@@ -15,39 +15,126 @@ from datetime import datetime
 from app import app
 
 
+# Choose the appropriate client
+client = MongoClient()
 
-def read_mongo_db(hours_to_plot=1):
-	if hours_to_plot > 0:
-		# Choose the appropriate client
-		client = MongoClient()
+# Connect to the db
+db = client.paulisasnake
 
-		# Connect to the db paulisasnake
-		db = client.paulisasnake
+def test(string):
+	print(string)
 
-		# Use the collection temp and humid
-		coll = db.temp_and_humid
+def read_dates_from_db(db=db):
+	"""
+	Gets the list of dates available in the temperature storage table and returns the list.
+	"""
 
-		# Bulk inserting documents. Each row in the DataFrame will be a document in Mongo
-		# coll.insert_many(data.to_dict('records'))
+	# Use the collection
+	coll = db.temp_storage
+
+	agg = coll.aggregate([
+	    {"$group": {
+	        "_id" : { "$concat": [
+	            {"$substr": [{"$year": "$time"}, 0, 4 ]},
+	            "-",
+	            {"$substr": [{"$month": "$time"}, 0, 2 ]},
+	            "-",
+	            {"$substr": [{"$dayOfMonth": "$time"}, 0, 2 ]},
+	        ]},
+	        "count": {"$sum": 1 }
+	     }},
+	     {"$sort": { "_id": 1 }}
+	])
+
+	dates = {}
+	# conver mongo object to dictionary
+	for x in agg:
+	    d  = x['_id'] # this date in the object
+	    c = x['count']# how many counts for that day
+	    dates[d] = c
+
+	print(dates)
+
+	# convert to list
+	lst_dates = dates.keys()
+
+	return lst_dates
 
 
-		entries_to_read = int(hours_to_plot * 60 * 60 / 10) # readout frequency is 10 seconds
-		# ====== Finding Documents ====== #
-		documents = coll.find().sort([('time', -1)]).limit(entries_to_read)
-
-		data = pd.DataFrame(list(documents))
-		print(entries_to_read,data)
-
-		data = data[['time', 'temp', 'humid']]
-		# clean data
-		data = data[(data['humid']>-0.5)&(data['humid']<110)]
-		data = data[(data['temp']>-40)&(data['temp']<60)]
+def read_temp_from_db(start_date, end_date, db=db):
+	"""
+	Reads the temperature collection from start_date to end_date and returns the temperature.
+	"""
 
 
-		return data
-	else:
-		print("none")
+	# Use the collection
+	coll = db.temp_storage
 
+	# query the mongo database
+	# select data
+
+	data = data[['time', 'temp']]
+	# return
+
+
+def read_humid_from_db(db, start_date,end_date):
+	"""
+	Reads the humidity collection from start_date to end_date and returns the humidity.
+	"""
+
+
+	# Use the collection
+	coll = db.temp_storage
+
+	# query the mongo database
+	# select data
+
+	data = data[['time', 'humid']]
+	# return
+
+
+
+
+# callback to update date range start value
+@app.callback(
+	Output('values_date_start', 'children'),
+	[Input('dropdown_date_start', 'value')])
+def update_values_date_start(value):
+	print(f'Start date: {value}')
+	return value
+
+# callback to update date range end value
+@app.callback(
+	Output('values_date_end', 'children'),
+	[Input('dropdown_date_end', 'value')])
+def update_values_date_end(value):
+	print(f'End date: {value}')
+	return value
+
+
+# callback to get available dates from the database
+# in this callback the dates of the start and end date range must be set
+
+
+# callback to update end dates from the database to be larger than the start dates only
+@app.callback(
+	Output('dropdown_date_end', 'options'),
+	[Input('values_date_start', 'children')],
+	[State('dropdown_date_start', 'options')])
+def update_values_date_end_based_on_start(value_date_start, date_start_options):
+	lst_date_start_options = [d['value'] for d in date_start_options] # list of the options in the start date dropdown
+
+	# get the index of the start date in the list
+	idx = lst_date_start_options.index(value_date_start)
+
+	# select only later start dates (by index)
+	date_end_options = lst_date_start_options[idx:]
+
+
+	# make it a dropdown object
+	date_end_options = [{'label': i, 'value': i} for i in date_end_options]
+
+	return date_end_options
 
 
 # callback to read the database and store in a json objective

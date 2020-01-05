@@ -13,53 +13,90 @@ from datetime import datetime
 
 from app import app
 
+from callbacks import *
 
 ################################################################################################################################################
 # layout_base
 ################################################################################################################################################
 
+# make the dates a callback
+lst_dates = read_dates_from_db()
+
 layout_base = html.Div([
+
 	html.Div(
-		id="header",
-		children=[
-			html.H2("Paul is a snake - temperature and humidity monitor"),
-			# html.A(
-				# html.Img(
-				# 	src="https://s3-us-west-1.amazonaws.com/plotly-tutorials/excel/dash-daq/dash-daq-logo-by-plotly-stripe+copy.png"
-				# ),
-				# href="http://www.dashdaq.io",
-			# ),
-		],
-		className="banner",
+        html.Img(
+            src='/assets/paul.jpg',
+            height=150,
+            style={'paddingLeft': '30px'}
+        ),
+		className="two columns"
 	),
-	html.H4('Select past hours to plot:'),
-	html.Div(
-		dcc.Input(id='input_hours_to_plot',value='1', type='number')
-			# options=[{'label': i, 'value': i} for i in lst_dates],
-			# value=lst_dates[-1])
-		),
-	html.Div(
-		html.Button(id='button_plot', n_clicks=0, children='Plot'),
-		style={
-			# "textAlign": "Center",
-			# "paddingTop": "2.5%",
-			"marginTop": "1%",
-			},
-		),
-	html.Hr(),
+	html.Div([
+		html.Div(
+			id="header",
+			children=[
 
-	html.Div(id='display_date_plotted', children='Plotted past ... hours'),
+				html.H2("Paul is a snake - temperature and humidity monitor"),
+				],
+			className="banner",
+		),
+		html.H5('Select date range to query:'),
+		html.Div([
+			html.Div(
+				[
+					html.Div('Start:'),
+					dcc.Dropdown(
+						id='dropdown_date_start',
+						options=[{'label': i, 'value': i} for i in lst_dates],
+						value=lst_dates[0]
+						),
+				],
 
-	dcc.Graph(id='plot_temp'),  # displays the data,plot_humid
-	dcc.Graph(id='plot_humid'),  # displays the data,plot_humid
-	# Placeholder Divs
-	html.Div(
-		[
-			html.Div(id="db_values"), # values stored in the database
-		],
-		style={"visibility": "hidden"},
+				className="two colums"
+
+			),
+
+			html.Div(
+				[
+					html.Div('End:'),
+					dcc.Dropdown(
+						id='dropdown_date_end',
+						options=[{'label': i, 'value': i} for i in lst_dates],
+						value=lst_dates[-1]
+						),
+				],
+
+				className="two colums"
+			),
+
+			],
+			className="two colums"
+		),
+		html.Div(
+			html.Button(id='button_plot', n_clicks=0, children='Plot'),
+			style={
+				"marginTop": "2%",
+				},
+		),
+		html.Hr(),
+
+		dcc.Graph(id='plot_temp'),  # displays the data,plot_humid
+		dcc.Graph(id='plot_humid'),  # displays the data,plot_humid
+		# Placeholder Divs
+		html.Div(
+			[
+				html.Div(id="values_date_start"), # date selector start date
+				html.Div(id="values_date_end"), # date selector end date
+				html.Div(id="values_dates"), # dates queried from the database
+				html.Div(id="values_temp"), # temperature data
+				html.Div(id="values_humid"), # humidity data
+			],
+			style={"visibility": "hidden"},
+		)
+	],
+	className="eight columns"
 	)
-
 
 ])
 
