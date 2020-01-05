@@ -1,6 +1,10 @@
 # paulisasnake
 
-RPi3 temperature and humidity sensor
+RPi3 temperature and humidity sensor.
+
+For explanation and documentation of the project, see https://heikokromer.com/index.php/2020/01/05/dashboard-paulisasnake/
+
+
 
 ## bluetooth on RPi3
 https://tutorials-raspberrypi.de/raspberry-pi-3-wlan-einrichten-bluetooth/
@@ -15,13 +19,13 @@ https://github.com/abrauchli/python-smartgadget
 
 - Start mongodb service using `sudo systemctl start mongodb.service`
 
-- Check that it is also running with a restart of the system 
+- Check that it is also running with a restart of the system
 
 - Install python packages `python3 -m pip install pymongo==3.4.0 pandas numpy`
 
 ## MongoDB access and crontab
 
-- the data from the test sensor is stored in the database `sensirion_test`, collection is `temp_and_humid`. 
+- the data from the test sensor is stored in the database `sensirion_test`, collection is `temp_and_humid`.
 - to check, connect to the RPi3 and run `mongo`. Then run `use sensirion_test` and find everything in the collection using `db.temp_and_humid.find().sort({$natural:-1})`.
 - execute `read_sensirion_and_insert_to_mongo.py` every minute in crontab adding `* * * * * python3 /home/pi/paulisasnake/Sensirion_smart_meter/read_sensirion_and_insert_to_mongo.py` to crontab -e
 
