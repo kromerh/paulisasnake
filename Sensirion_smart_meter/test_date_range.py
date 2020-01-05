@@ -23,7 +23,6 @@ end_date = dateutil.parser.parse(end_date_str)
 
 end_date = end_date + timedelta(days=1)
 
-print(end_date)
 vals = coll.find({
 	"time": {
 		'$gte': start_date,
@@ -31,5 +30,6 @@ vals = coll.find({
 	}
 })
 
-for val in vals:
-	print(val)
+data = pd.DataFrame(list(vals))
+
+print(data)
