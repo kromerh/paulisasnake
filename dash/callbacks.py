@@ -53,7 +53,7 @@ def read_dates_from_db(db=db):
 
 
 	# convert to list
-	lst_dates = dates.keys()
+	lst_dates = list(dates.keys())
 	print(lst_dates)
 	return lst_dates
 
