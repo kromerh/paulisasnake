@@ -63,31 +63,61 @@ def read_temp_from_db(start_date, end_date, db=db):
 	Reads the temperature collection from start_date to end_date and returns the temperature.
 	"""
 
-
 	# Use the collection
 	coll = db.temp_storage
 
-	# query the mongo database
-	# select data
+
+	start_date_str = f"{start_date}T00:00:00.000Z"
+	end_date_str = f"{end_date}T00:00:00.000Z"
+
+	start_date = dateutil.parser.parse(start_date_str)
+	end_date = dateutil.parser.parse(end_date_str)
+
+	end_date = end_date + timedelta(days=1)
+
+	vals = coll.find({
+		"time": {
+			'$gte': start_date,
+			'$lt': end_date
+		}
+	})
+
+	data = pd.DataFrame(list(vals))
 
 	data = data[['time', 'temp']]
-	# return
+
+	return data
 
 
-def read_humid_from_db(db, start_date,end_date):
+def read_humid_from_db(start_date,end_date, db=db):
 	"""
 	Reads the humidity collection from start_date to end_date and returns the humidity.
 	"""
 
-
 	# Use the collection
-	coll = db.temp_storage
+	coll = db.humid_storage
 
 	# query the mongo database
-	# select data
+	start_date_str = f"{start_date}T00:00:00.000Z"
+	end_date_str = f"{end_date}T00:00:00.000Z"
+
+	start_date = dateutil.parser.parse(start_date_str)
+	end_date = dateutil.parser.parse(end_date_str)
+
+	end_date = end_date + timedelta(days=1)
+
+	vals = coll.find({
+		"time": {
+			'$gte': start_date,
+			'$lt': end_date
+		}
+	})
+
+	data = pd.DataFrame(list(vals))
 
 	data = data[['time', 'humid']]
-	# return
+
+	return data
 
 
 
@@ -109,9 +139,24 @@ def update_values_date_end(value):
 	return value
 
 
-# callback to get available dates from the database
-# in this callback the dates of the start and end date range must be set
+# callback to read temperature from mongo
+@app.callback(
+	Output('values_temp', 'children'),
+	[Input('dropdown_date_start', 'value'),
+	Input('dropdown_date_end', 'value')])
+def read_temperature_from_mongo(start_date, end_date):
+	df = read_temp_from_db(start_date, end_date)
+	return df.to_json(date_format='iso', orient='split')
 
+
+# callback to read humidity from mongo
+@app.callback(
+	Output('values_humid', 'children'),
+	[Input('dropdown_date_start', 'value'),
+	Input('dropdown_date_end', 'value')])
+def read_humid_from_mongo(start_date, end_date):
+	df = read_humid_from_db(start_date, end_date)
+	return df.to_json(date_format='iso', orient='split')
 
 # callback to update end dates from the database to be larger than the start dates only
 @app.callback(
@@ -134,29 +179,11 @@ def update_values_date_end_based_on_start(value_date_start, date_start_options):
 	return date_end_options
 
 
-# callback to read the database and store in a json objective
-@app.callback(
-	Output('db_values', 'children'),
-	[Input('button_plot', 'n_clicks')],
-	[State("input_hours_to_plot", "value")]
-	)
-def cb_read_db(n, hours_to_plot):
-	df = read_mongo_db(float(hours_to_plot))  # retrieve the past 60 seconds
-	return df.to_json(date_format='iso', orient='split')
-
-
-@app.callback(
-	Output('display_date_plotted', 'children'),
-	[Input('db_values', 'children')],
-	[State("input_hours_to_plot", "value")])
-def display_time(json_data, hours_to_plot):
-	return u'Plot for the last : {} hours'.format(hours_to_plot)
-
 
 # temperature
 @app.callback(
 	Output("plot_temp", "figure"),
-	[Input("db_values", "children")]
+	[Input("values_temp", "children")]
 )
 # def plot_graph_data(df, figure, command, start, start_button, PID):
 def cb_plot_graph(json_data):
@@ -224,7 +251,7 @@ def cb_plot_graph(json_data):
 # humidity graph
 @app.callback(
 	Output("plot_humid", "figure"),
-	[Input("db_values", "children")]
+	[Input("values_humid", "children")]
 )
 # def plot_graph_data(df, figure, command, start, start_button, PID):
 def cb_plot_graph(json_data):
