@@ -13,10 +13,10 @@ db = client.paulisasnake
 coll = db.humid_storage
 
 vals = coll.find({
-    "time": {
-        $gte: ISODate("2019-12-11T00:00:00.000Z"),
-        $lt: ISODate("2019-12-14T00:00:00.000Z")
-    }
+	"time": {
+		$gte: ISODate("2019-12-11T00:00:00.000Z"),
+		$lt: ISODate("2019-12-14T00:00:00.000Z")
+	}
 })
 
 print(vals)
