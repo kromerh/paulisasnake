@@ -142,9 +142,10 @@ def update_values_date_end(value):
 # callback to read temperature from mongo
 @app.callback(
 	Output('values_temp', 'children'),
-	[Input('dropdown_date_start', 'value'),
-	Input('dropdown_date_end', 'value')])
-def read_temperature_from_mongo(start_date, end_date):
+	[Input('button_plot', 'n_clicks')]
+	[State('dropdown_date_start', 'value'),
+	State('dropdown_date_end', 'value')])
+def read_temperature_from_mongo(n, start_date, end_date):
 	df = read_temp_from_db(start_date, end_date)
 	return df.to_json(date_format='iso', orient='split')
 
@@ -152,9 +153,10 @@ def read_temperature_from_mongo(start_date, end_date):
 # callback to read humidity from mongo
 @app.callback(
 	Output('values_humid', 'children'),
-	[Input('dropdown_date_start', 'value'),
-	Input('dropdown_date_end', 'value')])
-def read_humid_from_mongo(start_date, end_date):
+	[Input('button_plot', 'n_clicks')]
+	[State('dropdown_date_start', 'value'),
+	State('dropdown_date_end', 'value')])
+def read_humid_from_mongo(n, start_date, end_date):
 	df = read_humid_from_db(start_date, end_date)
 	return df.to_json(date_format='iso', orient='split')
 
