@@ -14,8 +14,8 @@ coll = db.humid_storage
 
 vals = coll.find({
     created_at: {
-        $gte: ISODate("2010-04-29T00:00:00.000Z"),
-        $lt: ISODate("2010-05-01T00:00:00.000Z")
+        $gte: ISODate("2019-12-11T00:00:00.000Z"),
+        $lt: ISODate("2019-12-14T00:00:00.000Z")
     }
 })
 
